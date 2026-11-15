@@ -2,58 +2,33 @@
 
 **Your voice. At the speed of thought.**
 
-ANY is an independent, clean-room AI voice dictation and productivity platform. The product direction is inspired by the workflow category popularized by Wispr Flow, while all implementation, branding, UI, and product decisions in this repository are original.
+ANY is an independent, clean-room AI voice dictation and productivity platform. It builds an original product in the voice-first productivity category, without copying proprietary source, private APIs, protected assets or branding.
 
-## Product vision
+## Product surfaces
 
-Turn speech into polished, context-aware text anywhere you write.
+- **Marketing:** product story, features, pricing, FAQs and legal pages.
+- **Account:** email signup, login, confirmation callback, protected dashboard and sign-out.
+- **Subscriptions:** Free, Pro and Team plan presentation, Stripe Checkout, Customer Portal and verified webhook sync.
+- **Web app:** account billing, usage, vocabulary and writing preferences (in progress).
+- **Android:** microphone capture, transcription, floating controls and accessible text insertion (planned).
+- **Desktop:** macOS and Windows capture and system-wide text insertion (planned).
+- **Platform API:** authentication, transcription orchestration, formatting, usage, billing and audit events.
 
-### Product surfaces
+## Stack
 
-- **Marketing site:** product story, feature pages, pricing, FAQs, legal pages and conversion flows.
-- **Account:** sign-up, sign-in, onboarding, profile and workspace settings.
-- **Subscription:** Free, Pro and Team plans, checkout, billing portal, entitlements, usage metering and cancellation.
-- **Web app:** dictation history, vocabulary, writing preferences and usage dashboard.
-- **Android:** microphone capture, transcription, floating controls and accessible text insertion.
-- **Desktop:** macOS and Windows capture and system-wide text insertion.
-- **Platform API:** authentication, transcription orchestration, formatting, usage, billing webhooks and audit events.
-
-## Initial architecture
-
-| Layer | Initial choice |
+| Layer | Technology |
 |---|---|
-| Web | Next.js App Router, TypeScript, Tailwind CSS |
-| API | FastAPI, Python |
-| Data/Auth | Supabase Postgres, Auth, Row Level Security |
-| Billing | Stripe subscriptions and customer portal, behind server-side integration |
-| Audio | Pluggable ASR providers; local inference as a later capability |
-| Android | Kotlin, Jetpack Compose, AudioRecord |
-| Desktop | Tauri + Rust, native platform integrations |
-| Quality | TypeScript/Python tests, API contract tests, security and abuse cases |
-| Delivery | GitHub Actions; deployment target selected per environment |
-
-## Repository map
-
-```
-apps/
-  web/                 # Marketing site, pricing and account experience
-  api/                 # FastAPI service (planned)
-  android/             # Native Android client (planned)
-  desktop/             # macOS and Windows client (planned)
-packages/
-  contracts/           # Shared API and event contracts (planned)
-  config/              # Shared configuration (planned)
-docs/
-  PRODUCT.md
-  ARCHITECTURE.md
-  BILLING.md
-  SECURITY.md
-  ROADMAP.md
-```
+| Web | Next.js 16 App Router, React 19, TypeScript, Tailwind CSS |
+| Auth and database | Supabase Auth, Postgres and Row Level Security |
+| Billing | Stripe subscriptions, Checkout, Customer Portal and webhooks |
+| Audio | Provider-neutral ASR adapters (planned) |
+| Android | Kotlin, Jetpack Compose, AudioRecord (planned) |
+| Desktop | Tauri + Rust (planned) |
+| Quality | ESLint, TypeScript checks, production build and GitHub Actions |
 
 ## Local development
 
-The web application is the first implementation target. Use Node.js 20.9+.
+Requires Node.js 20.9+.
 
 ```bash
 npm install
@@ -63,27 +38,43 @@ npm run dev
 
 Open http://localhost:3000.
 
-No production secrets belong in source control. Configure Supabase and Stripe values only in local environment files or the deployment secret manager.
+See [Service setup](docs/SETUP.md) before testing authentication or billing. Generate and commit `package-lock.json` before production release.
 
-## Subscription principles
+## Implemented
 
-- Prices and entitlements are defined server-side, never trusted from the browser.
-- Stripe webhook events are signature-verified and processed idempotently.
-- A successful redirect is not proof of payment; entitlement changes follow verified billing events.
-- Cancellation, renewal, failed payment, refunds and plan changes are represented explicitly.
-- Usage is metered server-side with auditable events.
-- Tax, currency, regional payment methods and consumer disclosures must be configured before launch.
+- Responsive marketing homepage and pricing page.
+- Supabase browser and cookie-backed server clients.
+- Session refresh through the Next.js 16 Proxy.
+- Email/password signup and login with PKCE confirmation callback.
+- Protected dashboard and sign-out.
+- Server-side Stripe Checkout and Customer Portal endpoints.
+- Stripe webhook signature verification and event idempotency.
+- Database bootstrap schema with RLS for profiles, workspaces, memberships, subscriptions, usage, preferences and vocabulary.
+- CI workflow for lint, typecheck and production build.
 
-## Clean-room and security principles
+## Not yet live
 
-- Build original code and original product assets. Do not copy proprietary source, private APIs, branding or protected UI assets.
-- Use only authorized test accounts and documented/public interfaces.
-- Never commit credentials, tokens, customer data, recordings or production logs.
-- Enforce tenant isolation with database Row Level Security and server-side authorization.
-- Obtain explicit microphone consent and provide clear recording indicators and deletion controls.
+- Supabase project provisioning and schema application.
+- Stripe account configuration, live Price IDs and webhook secret.
+- Production subscription entitlements and usage enforcement.
+- Speech capture, ASR, formatting engine and native clients.
+- Production deployment and end-to-end verification.
 
-## Status
+The prices shown in the UI are illustrative planning values. Do not treat them as live offers until pricing, taxes, quotas, terms and payment settings are approved.
 
-The repository is being initialized. The first milestone is the responsive marketing and pricing experience, followed by authentication, billing and the transcription API.
+## Security principles
 
-See [Product brief](docs/PRODUCT.md), [Architecture](docs/ARCHITECTURE.md), [Billing](docs/BILLING.md), [Security](docs/SECURITY.md) and [Roadmap](docs/ROADMAP.md).
+- Server-side plan and price allowlists. Never trust client-supplied prices or entitlements.
+- Verified Stripe signatures and idempotent webhook processing.
+- Supabase RLS on every exposed table; server-only secret keys.
+- No credentials, recordings, transcripts or customer data in source control.
+- Explicit microphone consent, recording indicators and user-controlled deletion.
+
+## Documentation
+
+- [Product brief](docs/PRODUCT.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Billing model](docs/BILLING.md)
+- [Service setup](docs/SETUP.md)
+- [Security baseline](docs/SECURITY.md)
+- [Roadmap](docs/ROADMAP.md)
