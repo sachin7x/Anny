@@ -26,6 +26,15 @@ type TranscriptionResponse = {
 };
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get("origin");
+  const expectedOrigin = process.env.NEXT_PUBLIC_APP_URL
+    ? new URL(process.env.NEXT_PUBLIC_APP_URL).origin
+    : request.nextUrl.origin;
+
+  if (origin && origin !== expectedOrigin) {
+    return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
+
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
