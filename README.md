@@ -9,7 +9,7 @@ ANY is an independent, clean-room AI voice dictation and productivity platform. 
 - **Marketing:** product story, features, pricing, FAQs and legal pages.
 - **Account:** email signup, login, confirmation callback, protected dashboard and sign-out.
 - **Subscriptions:** Free, Pro and Team plan presentation, Stripe Checkout, Customer Portal and verified webhook sync.
-- **Web app:** account billing, usage, vocabulary and writing preferences (in progress).
+- **Web app:** browser microphone capture, transcription, editable transcript, billing and account settings.
 - **Android:** microphone capture, transcription, floating controls and accessible text insertion (planned).
 - **Desktop:** macOS and Windows capture and system-wide text insertion (planned).
 - **Platform API:** authentication, transcription orchestration, formatting, usage, billing and audit events.
@@ -21,7 +21,7 @@ ANY is an independent, clean-room AI voice dictation and productivity platform. 
 | Web | Next.js 16 App Router, React 19, TypeScript, Tailwind CSS |
 | Auth and database | Supabase Auth, Postgres and Row Level Security |
 | Billing | Stripe subscriptions, Checkout, Customer Portal and webhooks |
-| Audio | Provider-neutral ASR adapters (planned) |
+| Speech-to-text | OpenAI Audio Transcriptions API behind a server route |
 | Android | Kotlin, Jetpack Compose, AudioRecord (planned) |
 | Desktop | Tauri + Rust (planned) |
 | Quality | ESLint, TypeScript checks, production build and GitHub Actions |
@@ -38,7 +38,7 @@ npm run dev
 
 Open http://localhost:3000.
 
-See [Service setup](docs/SETUP.md) before testing authentication or billing. Generate and commit `package-lock.json` before production release.
+See [Service setup](docs/SETUP.md) before testing authentication, transcription or billing. Generate and commit `package-lock.json` before production release.
 
 ## Implemented
 
@@ -47,6 +47,8 @@ See [Service setup](docs/SETUP.md) before testing authentication or billing. Gen
 - Session refresh through the Next.js 16 Proxy.
 - Email/password signup and login with PKCE confirmation callback.
 - Protected dashboard and sign-out.
+- Browser microphone recording with editable transcription output.
+- Authenticated audio transcription endpoint with file-size/type checks and usage-event recording.
 - Server-side Stripe Checkout and Customer Portal endpoints.
 - Stripe webhook signature verification and event idempotency.
 - Database bootstrap schema with RLS for profiles, workspaces, memberships, subscriptions, usage, preferences and vocabulary.
@@ -56,8 +58,10 @@ See [Service setup](docs/SETUP.md) before testing authentication or billing. Gen
 
 - Supabase project provisioning and schema application.
 - Stripe account configuration, live Price IDs and webhook secret.
-- Production subscription entitlements and usage enforcement.
-- Speech capture, ASR, formatting engine and native clients.
+- Monthly plan quotas, usage enforcement and production rate limiting.
+- Advanced AI cleanup, context-aware formatting and vocabulary injection.
+- Realtime streaming transcription and native system-wide insertion.
+- Android and desktop clients.
 - Production deployment and end-to-end verification.
 
 The prices shown in the UI are illustrative planning values. Do not treat them as live offers until pricing, taxes, quotas, terms and payment settings are approved.
