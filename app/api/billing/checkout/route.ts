@@ -50,7 +50,23 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const stripe = new Stripe(secret);
+    const { data: active, error: subscriptionLookupError } = await supabase
+      .from("subscriptions")
+      .select("status")
+      .eq("user_id", user.id)
+      .in("status", ["active", "trialing", "past_due", "incomplete", "unpaid"])
+      .limit(1)
+      .maybeSingle();
+
+    if (subscriptionLookupError) {
+      return NextResponse.json({ error: "Subscription storage is unavailable." }, { status: 503 });
+    }
+    if (active) {
+      return NextResponse.json({
+        error: "An existing subscription is already linked to this account. Manage it from Billing."
+      }, { status: 409 });
+    }
+
     const { data: existing } = await supabase
       .from("subscriptions")
       .select("stripe_customer_id")
@@ -60,6 +76,7 @@ export async function POST(request: NextRequest) {
       .limit(1)
       .maybeSingle();
 
+    const stripe = new Stripe(secret);
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
