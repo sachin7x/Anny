@@ -3,18 +3,26 @@
 ## Phase 0: Foundation
 - [x] Create repository and product brief.
 - [x] Establish architecture, billing and security principles.
-- [x] Build initial marketing homepage and pricing presentation.
-- [ ] Add lint, typecheck, test and build workflows.
-- [ ] Verify clean install and production build.
+- [x] Build marketing homepage and subscription pricing presentation.
+- [x] Add lint, typecheck, build and CI workflow definitions.
+- [x] Upgrade the web stack to a supported Next.js major.
+- [x] Add Supabase SSR browser/server clients and session Proxy.
+- [x] Implement email signup, login, PKCE callback and sign-out.
+- [x] Add protected account dashboard and billing view.
+- [x] Add Stripe Checkout, customer portal and signed webhook handlers.
+- [x] Add database bootstrap schema with RLS.
+- [ ] Generate and commit npm lockfile; run CI and fix any failures.
+- [ ] Provision a dedicated Supabase project and apply the schema.
 
 ## Phase 1: Web MVP
-- [ ] Authentication and onboarding.
-- [ ] Supabase schema, migrations and RLS.
-- [ ] Account, settings and usage dashboard.
-- [ ] Plan catalogue and server-side entitlements.
-- [ ] Stripe checkout, portal and verified webhooks.
-- [ ] API service and ASR provider adapter.
-- [ ] Dictation history and user data deletion.
+- [x] Authentication UI and protected dashboard code.
+- [x] Subscription state projection and billing endpoints.
+- [ ] Verify authentication against a configured Supabase project.
+- [ ] Configure Stripe test Prices and webhook endpoint.
+- [ ] Add server-side plan entitlements and usage enforcement.
+- [ ] Add account preferences, vocabulary and usage dashboard.
+- [ ] Add API service and ASR provider adapter.
+- [ ] Add data export and account deletion.
 
 ## Phase 2: Android
 - [ ] Kotlin + Jetpack Compose application.
@@ -34,4 +42,4 @@
 - [ ] Workspaces, seats and invitations.
 - [ ] Shared vocabulary and style settings.
 - [ ] Admin analytics and audit trail.
-- [ ] Reliability, cost and abuse controls.
+- [ ] Reliability, cost, abuse and support controls.
