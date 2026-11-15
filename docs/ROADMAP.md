@@ -11,18 +11,22 @@
 - [x] Add protected account dashboard and billing view.
 - [x] Add Stripe Checkout, customer portal and signed webhook handlers.
 - [x] Add database bootstrap schema with RLS.
-- [ ] Generate and commit npm lockfile; run CI and fix any failures.
+- [x] Add browser microphone capture and authenticated file transcription endpoint.
+- [x] Verify lint, typecheck and production build in GitHub Actions.
+- [ ] Generate and commit npm lockfile.
 - [ ] Provision a dedicated Supabase project and apply the schema.
 
 ## Phase 1: Web MVP
 - [x] Authentication UI and protected dashboard code.
 - [x] Subscription state projection and billing endpoints.
-- [ ] Verify authentication against a configured Supabase project.
+- [x] Browser recording, transcription and usage-event recording.
+- [ ] Verify authentication and transcription against a configured Supabase project.
 - [ ] Configure Stripe test Prices and webhook endpoint.
-- [ ] Add server-side plan entitlements and usage enforcement.
-- [ ] Add account preferences, vocabulary and usage dashboard.
-- [ ] Add API service and ASR provider adapter.
-- [ ] Add data export and account deletion.
+- [ ] Add monthly plan quotas, atomic usage enforcement and rate limiting.
+- [ ] Add AI cleanup, formatting styles and vocabulary injection.
+- [ ] Add account preferences, usage dashboard and data export/deletion.
+- [ ] Add transcription provider abstraction and fallback providers.
+- [ ] Add realtime streaming transcription.
 
 ## Phase 2: Android
 - [ ] Kotlin + Jetpack Compose application.
