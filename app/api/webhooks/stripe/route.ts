@@ -11,9 +11,8 @@ function getCustomerId(customer: string | Stripe.Customer | Stripe.DeletedCustom
 
 async function syncSubscription(subscription: Stripe.Subscription) {
   const userId = subscription.metadata.user_id;
-  if (!userId) {
-    throw new Error("Subscription is missing ANY user metadata.");
-  }
+  // Ignore subscriptions belonging to other products in a shared Stripe account.
+  if (!userId) return;
 
   const admin = createAdminClient();
   const priceId = subscription.items.data[0]?.price.id ?? null;
