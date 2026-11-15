@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export default function LoginPage() {
+  return <main className="flex min-h-screen items-center justify-center bg-[#f7f7f4] px-6 py-16"><section className="w-full max-w-md rounded-[2rem] border border-black/10 bg-white p-8 sm:p-10"><Link href="/" className="text-2xl font-black tracking-[-.08em]">ANY<span className="text-lime-600">.</span></Link><p className="mt-10 text-xs font-bold uppercase tracking-[.18em] text-neutral-400">Welcome back</p><h1 className="mt-3 text-4xl font-semibold tracking-[-.06em]">Pick up your flow.</h1><p className="mt-4 text-sm leading-6 text-neutral-500">Secure sign-in will be enabled with the authentication milestone. No credentials are collected on this preview page.</p><button disabled className="mt-8 w-full cursor-not-allowed rounded-full bg-neutral-200 px-5 py-4 text-sm font-bold text-neutral-500">Log in · Coming soon</button><p className="mt-6 text-center text-sm text-neutral-500">New to ANY? <Link className="font-semibold text-black underline" href="/signup">Create an account</Link></p></section></main>;
+}
