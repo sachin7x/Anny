@@ -23,7 +23,9 @@ async function syncSubscription(subscription: Stripe.Subscription) {
     plan_key: subscription.metadata.plan_key ?? "unknown",
     price_id: priceId,
     status: subscription.status,
-    current_period_end: new Date(subscription.current_period_end * 1000).toISOString(),
+    current_period_end: subscription.items.data[0]?.current_period_end
+      ? new Date(subscription.items.data[0].current_period_end * 1000).toISOString()
+      : null,
     cancel_at_period_end: subscription.cancel_at_period_end,
     updated_at: new Date().toISOString()
   }, { onConflict: "stripe_subscription_id" });
