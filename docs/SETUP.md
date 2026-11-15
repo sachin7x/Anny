@@ -6,6 +6,7 @@
 - npm.
 - A dedicated Supabase project for ANY.
 - A Stripe account in test mode for billing integration.
+- An OpenAI API key with access to the Audio Transcriptions API.
 
 ## 1. Install dependencies
 
@@ -57,11 +58,19 @@ Configure a webhook endpoint at `/api/webhooks/stripe` and subscribe to:
 
 Use Stripe CLI for local webhook forwarding. The endpoint verifies the signature against the raw request body and stores event IDs for idempotency.
 
-## 4. Configure the app URL
+## 4. Configure speech transcription
+
+Set `OPENAI_API_KEY` in `.env.local`. The default model is `gpt-transcribe`, the current recommended model for file transcription. You can override it with `OPENAI_TRANSCRIPTION_MODEL` when testing another supported model.
+
+The dashboard records audio in the browser, sends the completed recording to `/api/transcriptions`, and the server forwards it to OpenAI. The app stores a usage event containing provider/model and file metadata, but does not store the audio or transcript. Uploads are capped at 25 MB and accepted formats follow the provider's supported list.
+
+Microphone access requires HTTPS or localhost. The browser prompts the user for permission before recording. Provider data handling and retention are governed by the configured provider account and its terms.
+
+## 5. Configure the app URL
 
 Set `NEXT_PUBLIC_APP_URL` to the exact origin used by the browser, for example `http://localhost:3000`. Update Supabase Auth redirect URLs and Stripe webhook settings when moving to staging or production.
 
-## 5. Verify
+## 6. Verify
 
 ```bash
 npm run lint
@@ -69,12 +78,13 @@ npm run typecheck
 npm run build
 ```
 
-Then test the complete email confirmation, login, logout, checkout, customer portal and webhook flows using test credentials only.
+Then test the complete email confirmation, login, logout, browser recording, transcription, checkout, customer portal and webhook flows using test credentials only.
 
 ## Current implementation boundaries
 
 - Supabase project provisioning and schema application have not been performed by this repository bootstrap.
 - Stripe checkout and portal routes are implemented but return a configuration error until valid test-mode keys and Price IDs are configured.
-- The initial prices shown on the public pricing page are illustrative. Confirm final commercial pricing, taxes, currencies, usage allowances and cancellation terms before enabling live payments.
+- Transcription requires a configured OpenAI API key and Supabase project. Monthly plan quotas and usage-based billing enforcement are not implemented yet.
+- The initial prices shown in the UI are illustrative. Confirm final commercial pricing, taxes, currencies, usage allowances and cancellation terms before enabling live payments.
 - Add rate limiting to authentication and billing endpoints before public production traffic.
 - A lockfile must be generated and committed before production CI is considered reproducible.
